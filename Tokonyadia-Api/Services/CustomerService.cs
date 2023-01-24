@@ -106,11 +106,11 @@ public class CustomerService : ICustomerService
         return response;
     }
 
-    public async Task DeleteById(string id)
-    {
-        var customer = await _customerRepository.FindById(Guid.Parse(id));
-        if (customer is null) throw new Exception("Customer Not Found");
-        _customerRepository.Delete(customer);
-        await _persistance.SaveChangesAsync();
-    }
+    // public async Task DeleteById(string id)
+    // {
+    //     var customer = await _customerRepository.FindById(Guid.Parse(id));
+    //     if (customer is null) throw new Exception("Customer Not Found");
+    //     _customerRepository.Delete(customer);
+    //     await _persistance.SaveChangesAsync();
+    // }
 }

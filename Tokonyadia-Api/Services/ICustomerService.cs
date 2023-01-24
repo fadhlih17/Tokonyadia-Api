@@ -10,6 +10,5 @@ public interface ICustomerService
     Task<CustomerResponse> GetById(string id);
     Task<PageResponse<CustomerResponse>> GetAll(string? name, int page, int size);
     Task<CustomerResponse> Update(Customer payload);
-    Task DeleteById(string id);
-    
+    // Task DeleteById(string id);
 }

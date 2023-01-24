@@ -84,17 +84,17 @@ public class CustomerController : ControllerBase
     }
 
     // Delete Customer
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCustomerById(string id)
-    {
-        await _customerService.DeleteById(id);
-
-        CommonResponse<CustomerResponse> response = new()
-        {
-            StatusCode = (int)HttpStatusCode.OK,
-            Message = "Success Delete Customer",
-        };
-
-        return Ok(response);
-    }
+    // [HttpDelete("{id}")]
+    // public async Task<IActionResult> DeleteCustomerById(string id)
+    // {
+    //     await _customerService.DeleteById(id);
+    //
+    //     CommonResponse<CustomerResponse> response = new()
+    //     {
+    //         StatusCode = (int)HttpStatusCode.OK,
+    //         Message = "Success Delete Customer",
+    //     };
+    //
+    //     return Ok(response);
+    // }
 }
