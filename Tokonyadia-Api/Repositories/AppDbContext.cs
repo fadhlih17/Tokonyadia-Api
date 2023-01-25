@@ -11,6 +11,8 @@ public class AppDbContext : DbContext
     public DbSet<Purchase> Purchases => Set<Purchase>();
     public DbSet<PurchaseDetail> PurchaseDetails => Set<PurchaseDetail>();
     public DbSet<Store> Stores => Set<Store>();
+    public DbSet<UserCredential> UserCredentials => Set<UserCredential>();
+    public DbSet<Role> Roles => Set<Role>();
 
     protected AppDbContext()
     {
@@ -24,7 +26,6 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasIndex(customer => customer.Email).IsUnique();
             entity.HasIndex(customer => customer.PhoneNumber).IsUnique();
         });
 
@@ -33,7 +34,10 @@ public class AppDbContext : DbContext
             entity.HasIndex(store => store.SiupNumber).IsUnique();
             entity.HasIndex(store => store.PhoneNumber).IsUnique();
         });
-        
-        
+
+        modelBuilder.Entity<UserCredential>(entity =>
+        {
+            entity.HasIndex(credential => credential.Email).IsUnique();
+        });
     }
 }

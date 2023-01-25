@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UpSkill\\.Net\\Challenge\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj": {}
+    "D:\\UpSkill\\.Net\\program\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj": {}
   },
   "projects": {
-    "D:\\UpSkill\\.Net\\Challenge\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj": {
+    "D:\\UpSkill\\.Net\\program\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UpSkill\\.Net\\Challenge\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj",
+        "projectUniqueName": "D:\\UpSkill\\.Net\\program\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj",
         "projectName": "Tokonyadia-Api",
-        "projectPath": "D:\\UpSkill\\.Net\\Challenge\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj",
+        "projectPath": "D:\\UpSkill\\.Net\\program\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj",
         "packagesPath": "C:\\Users\\fadhl\\.nuget\\packages\\",
-        "outputPath": "D:\\UpSkill\\.Net\\Challenge\\Tokonyadia-Api\\Tokonyadia-Api\\obj\\",
+        "outputPath": "D:\\UpSkill\\.Net\\program\\Tokonyadia-Api\\Tokonyadia-Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\fadhl\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.13, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.2, )"

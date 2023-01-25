@@ -14,7 +14,10 @@ public class Customer
     
     [Column(name:"phone_number", TypeName = "NVarchar(14)")]
     public string PhoneNumber { get; set; }
-    
-    [Column(name:"email", TypeName = "NVarchar(50)")]
-    public string Email { get; set; }
+
+    // Relasi ke user credential one to one
+    [Column(name:"user_credential_id")]
+    public Guid UserCredentialId { get; set; }
+
+    public virtual UserCredential UserCredential { get; set; }
 }

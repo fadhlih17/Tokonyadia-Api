@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "QGjRkxDUYjd9LwimQ/8YHfV0GDQ2nBb0hKK6DfnGY9aN+N9lr7kVm8mdcEGhP6bKNes9SHjRN02BuT12CLMuVg==",
+  "dgSpecHash": "sy0C75xiiD7RT5cQmMwngs6PsXAl24fekPMEnfPwqL5Z8UYOL0xqtI4M+1/sZ6yj0uw6zPpZ8j0a++gcemf3Rg==",
   "success": true,
-  "projectFilePath": "D:\\UpSkill\\.Net\\Challenge\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj",
+  "projectFilePath": "D:\\UpSkill\\.Net\\program\\Tokonyadia-Api\\Tokonyadia-Api\\Tokonyadia-Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fadhl\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\fadhl\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\fadhl\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\fadhl\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\fadhl\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.13\\microsoft.aspnetcore.authentication.jwtbearer.6.0.13.nupkg.sha512",
     "C:\\Users\\fadhl\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\fadhl\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\fadhl\\.nuget\\packages\\microsoft.data.sqlclient\\5.0.1\\microsoft.data.sqlclient.5.0.1.nupkg.sha512",

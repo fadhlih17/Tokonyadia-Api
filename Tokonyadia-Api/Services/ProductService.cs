@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
+using Tokonyadia_Api.Middlewares;
 using Tokonyadia_Api.Repositories;
 
 namespace Tokonyadia_Api.Services;
@@ -87,7 +88,7 @@ public class ProductService : IProductService
         {
             var product = await _productRepository.Find(product => product.Id.Equals(Guid.Parse(id)), new[] { "ProductPrices" });
 
-            if (product is null) throw new  Exception("product not found");
+            if (product is null) throw new  NotFoundException("product not found");
 
             var productPriceResponses = product.ProductPrices.Select(productPrice => new ProductPriceResponse
             {
@@ -159,7 +160,7 @@ public class ProductService : IProductService
 
     public async Task<ProductResponse> Update(Product payload)
     {
-        if (payload.Id == Guid.Empty) throw new Exception("Product Not Found");
+        if (payload.Id == Guid.Empty) throw new NotFoundException("Product Not Found");
         
         _productRepository.Update(payload);
         await _persistance.SaveChangesAsync();
@@ -186,7 +187,7 @@ public class ProductService : IProductService
     public async Task DeleteById(string id)
     {
         var product = await _productRepository.FindById(Guid.Parse(id));
-        if (product is null) throw new Exception("Product not found");
+        if (product is null) throw new NotFoundException("Product not found");
         _productRepository.Delete(product);
         await _persistance.SaveChangesAsync();
     }

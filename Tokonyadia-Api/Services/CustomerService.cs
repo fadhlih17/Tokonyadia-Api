@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
+using Tokonyadia_Api.Middlewares;
 using Tokonyadia_Api.Repositories;
 
 namespace Tokonyadia_Api.Services;
@@ -31,7 +32,6 @@ public class CustomerService : ICustomerService
             Name = result.CustomerName,
             PhoneNumber = result.PhoneNumber,
             Address = result.Address,
-            Email = result.Email
         };
         
         return response;
@@ -41,7 +41,7 @@ public class CustomerService : ICustomerService
     {
         var customer = await _customerRepository.Find(customer => customer.Id.Equals(Guid.Parse(id)));
 
-        if (customer is null) throw new Exception("Customer Not Found");
+        if (customer is null) throw new NotFoundException("Customer Not Found");
 
         CustomerResponse response = new CustomerResponse
         {
@@ -49,7 +49,6 @@ public class CustomerService : ICustomerService
             Name = customer.CustomerName,
             PhoneNumber = customer.PhoneNumber,
             Address = customer.Address,
-            Email = customer.Email
         };
 
         return response;
@@ -71,7 +70,6 @@ public class CustomerService : ICustomerService
                 Name = customer.CustomerName,
                 PhoneNumber = customer.PhoneNumber,
                 Address = customer.Address,
-                Email = customer.Email,
             };
         }).ToList();
         
@@ -89,7 +87,7 @@ public class CustomerService : ICustomerService
 
     public async Task<CustomerResponse> Update(Customer payload)
     {
-        if (payload.Id == Guid.Empty) throw new Exception("Customer Not Found");
+        if (payload.Id == Guid.Empty) throw new NotFoundException("Customer Not Found");
         
         _customerRepository.Update(payload);
         await _persistance.SaveChangesAsync();
@@ -100,7 +98,6 @@ public class CustomerService : ICustomerService
             Name = payload.CustomerName,
             PhoneNumber = payload.PhoneNumber,
             Address = payload.Address,
-            Email = payload.Email
         };
 
         return response;

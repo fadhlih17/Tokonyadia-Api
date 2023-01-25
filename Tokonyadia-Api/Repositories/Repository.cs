@@ -57,6 +57,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             query = query.Include(include);
         }
 
+        /*
+         * SELECT * FROM t_purchase tp
+         * JOIN t_purchase_detail tpd ON tpd.purchase_id = tp.id (titik pertama kita ambil PurchaseDetails)
+         * JOIN m_product_price mpp ON mpp.id = tpd.product_price_id (titik kedua kita ambil ProductPrice)
+         * JOIN m_product mp ON mp.id = mpp.product_id (titik ketiga kita ambil Product)
+         */
+
         return await query.FirstOrDefaultAsync(criteria);
     }
 

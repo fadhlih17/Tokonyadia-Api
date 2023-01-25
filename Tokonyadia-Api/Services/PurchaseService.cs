@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
+using Tokonyadia_Api.Middlewares;
 using Tokonyadia_Api.Repositories;
 
 namespace Tokonyadia_Api.Services;
@@ -50,7 +51,7 @@ public class PurchaseService : IPurchaseService
         var purchase = await _purchaseRepository.Find(purchase => purchase.Id.Equals(Guid.Parse(id)),
             new []{ "PurchaseDetails" });
 
-        if (purchase is null) throw new Exception("Purchase not found");
+        if (purchase is null) throw new NotFoundException("Purchase not found");
 
         var purchaseDetailResponse = purchase.PurchaseDetails.Select(purchaseDetail => new PurchaseDetailResponse
         {
@@ -112,7 +113,7 @@ public class PurchaseService : IPurchaseService
             TotalElement = purchaseResponses.Count
         };
 
-        if (pageResponse.TotalElement == 0) throw new Exception("Data not found");
+        if (pageResponse.TotalElement == 0) throw new NotFoundException("Data not found");
         
         return pageResponse;
     }

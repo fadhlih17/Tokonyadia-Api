@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
+using Tokonyadia_Api.Middlewares;
 using Tokonyadia_Api.Repositories;
 
 namespace Tokonyadia_Api.Services;
@@ -89,7 +90,7 @@ public class StoreService : IStoreService
 
     public async Task<StoreResponse> Update(Store payload)
     {
-        if (payload.Id == Guid.Empty) throw new Exception("Store Not Found");
+        if (payload.Id == Guid.Empty) throw new NotFoundException("Store Not Found");
 
         _storeRepository.Update(payload);
         await _persistance.SaveChangesAsync();
@@ -109,7 +110,7 @@ public class StoreService : IStoreService
     public async Task DeleteById(string id)
     {
         var store = await _storeRepository.FindById(Guid.Parse(id));
-        if (store is null) throw new Exception("Store not found");
+        if (store is null) throw new NotFoundException("Store not found");
         _storeRepository.Delete(store);
         await _persistance.SaveChangesAsync();
     }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Tokonyadia_Api.Middlewares;
 using Tokonyadia_Api.Repositories;
 using Tokonyadia_Api.Services;
 
@@ -24,6 +25,8 @@ builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IPurchaseService, PurchaseService>();
 builder.Services.AddTransient<IStoreService, StoreService>();
 
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +39,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// Middleware untuk handle exception
+app.UseMiddleware<ExceptionHandlingMiddleware>(); // make middleware custom
 
 app.MapControllers();
 
