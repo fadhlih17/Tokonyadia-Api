@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
+using Tokonyadia_Api.Middlewares;
 using Tokonyadia_Api.Repositories;
 
 namespace Tokonyadia_Api.Services;
@@ -30,7 +31,8 @@ public class CustomerService : ICustomerService
         return update;
     }
 
-    // public async Task<CustomerResponse> CreateNewCustomer(Customer payload)
+
+      // public async Task<CustomerResponse> CreateNewCustomer(Customer payload)
     // {
     //     var result = await _persistance.ExecuteTransactionAsync(async () =>
     //     {

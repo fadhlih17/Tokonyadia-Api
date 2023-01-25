@@ -32,6 +32,7 @@ public class AppDbContext : DbContext
             entity.HasIndex(store => store.SiupNumber).IsUnique();
             entity.HasIndex(store => store.PhoneNumber).IsUnique();
         });
+        
         modelBuilder.Entity<UserCredential>().HasIndex(uc => uc.Email).IsUnique();
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System.Net;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
+using Tokonyadia_Api.Exceptions;
 using Tokonyadia_Api.Middlewares;
 using Tokonyadia_Api.Repositories;
 using Tokonyadia_Api.Services;
@@ -24,7 +27,7 @@ public class CustomerController : BaseController
         _logger = logger;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet]
     public async Task<IActionResult> GetAllCustomer()
     {
         var customers = await _appDbContext.Customers.ToListAsync();
@@ -46,7 +49,8 @@ public class CustomerController : BaseController
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
+    [AllowAnonymous]
     public async Task<IActionResult> UpdateCustomer([FromBody] Customer customer)
     {
         try
@@ -54,19 +58,19 @@ public class CustomerController : BaseController
             if (customer.Id == Guid.Empty) return new NotFoundObjectResult("Customer not found");
             var currentCustomer = await _appDbContext.Customers.FirstOrDefaultAsync(c => c.Id.Equals(customer.Id));
             if (currentCustomer is null) return new NotFoundObjectResult("customer not found");
-            
+
             var entry = _appDbContext.Customers.Attach(customer);
             _appDbContext.Customers.Update(customer);
             
             await _appDbContext.SaveChangesAsync();
             return Ok(entry.Entity);
-
+    
         }
         catch (Exception e)
         {
             _logger.LogError(e.Message);
             return new StatusCodeResult(500);
-
+    
         }
     }
     
@@ -88,6 +92,16 @@ public class CustomerController : BaseController
         }
     }
 
+    [HttpGet("me")]
+    [Authorize(Roles = "Customer")]
+    public async Task<IActionResult> GetMySelf()
+    {
+        var email = User.Claims.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.Email))?.Value;
+        var customer = _appDbContext.Customers.Include("UserCredential")
+            .FirstOrDefault(customer => customer.UserCredential.Email.Equals(email));
+        if (customer is null) throw new UnauthorizedException("Unauthorized");
+        return Ok(customer); 
+    }
 
     // Create Customer
     // [HttpPost]

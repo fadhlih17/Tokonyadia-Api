@@ -47,4 +47,22 @@ public class AuthController : BaseController
 
         return Ok(response);
     }
+    
+    
+    // Admin
+    [HttpPost("register-admin")]
+    [AllowAnonymous] // Semua orang bisa akses tanpa membawa token
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterRequest request)
+    {
+        var user = await _authService.RegisterAdmin(request);
+        var response = new CommonResponse<RegisterResponse>
+        {
+            StatusCode = (int)HttpStatusCode.Created,
+            Message = "Successfully create new admin",
+            Data = user
+        };
+        
+        return Created("api/auth/register-admin", response);
+    }
+
 }

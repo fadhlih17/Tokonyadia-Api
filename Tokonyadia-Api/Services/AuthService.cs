@@ -81,4 +81,34 @@ public class AuthService : IAuthService
             Token = token
         };
     }
+    
+    public async Task<RegisterResponse> RegisterAdmin(RegisterRequest request)
+    {
+        var registerResponse = await _persistance.ExecuteTransactionAsync(async () =>
+        {
+            // Menyimpan role
+            var role = await _roleService.GetOrSave(ERole.Admin);
+
+            // Menyimpan usercredential
+            var userCredential = new UserCredential
+            {
+                Email = request.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                Role = role
+            };
+            var saveUser = await _repository.Save(userCredential);
+            await _persistance.SaveChangesAsync();
+            
+            // menyimpan customer yang berrelasi dengan usercredential
+            // await _customerService.Create(new Customer { PhoneNumber = request.PhoneNumber, UserCredential = saveUser });
+
+            return new RegisterResponse
+            {
+                Email = saveUser.Email,
+                Role = saveUser.Role.ERole.ToString()
+            };
+        });
+
+        return registerResponse;
+    }
 }

@@ -8,4 +8,5 @@ public interface IAuthService
     Task<UserCredential> LoadByEmail(string email);
     Task<RegisterResponse> Register(RegisterRequest request);
     Task<LoginResponse> Login(LoginRequest request);
+    Task<RegisterResponse> RegisterAdmin(RegisterRequest request);
 }
