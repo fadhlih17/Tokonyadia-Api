@@ -8,9 +8,9 @@ using Tokonyadia_Api.Services;
 
 namespace Tokonyadia_Api.Controllers;
 
-[ApiController]
+// [ApiController]
 [Route("api/stores")]
-public class StoreController : ControllerBase
+public class StoreController : BaseController
 {
     private readonly IStoreService _storeService;
 

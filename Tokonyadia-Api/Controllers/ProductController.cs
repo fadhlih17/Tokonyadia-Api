@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
@@ -6,9 +7,9 @@ using Tokonyadia_Api.Services;
 
 namespace Tokonyadia_Api.Controllers;
 
-[ApiController]
+// [ApiController]
 [Route("api/products")]
-public class ProductController : ControllerBase
+public class ProductController : BaseController
 {
     private readonly IProductService _productService;
 
@@ -18,6 +19,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")] // hanya bisa diakses oleh token admin
     public async Task<IActionResult> CreateNewProduct([FromBody] Product request)
     {
         var productResponse = await _productService.CreateNewProduct(request);
@@ -34,6 +36,7 @@ public class ProductController : ControllerBase
     
     // Get with join by id
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetProductById(string id)
     {
         var productResponse = await _productService.GetById(id);
@@ -49,6 +52,7 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllProduct([FromQuery] string? name, [FromQuery] int page = 1, [FromQuery] int size = 5)
     {
         var products = await _productService.GetAll(name, page, size);
@@ -64,6 +68,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{id}")] // path variable
+    [Authorize]
     public async Task<IActionResult> DeleteProductById(string id)
     {
         await _productService.DeleteById(id);
@@ -78,6 +83,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize]
     public async Task<IActionResult> UpdateProduct([FromBody]Product request)
     {
         var product = await _productService.Update(request);

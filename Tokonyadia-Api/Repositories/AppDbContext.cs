@@ -24,7 +24,6 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasIndex(customer => customer.Email).IsUnique();
             entity.HasIndex(customer => customer.PhoneNumber).IsUnique();
         });
 
@@ -33,7 +32,6 @@ public class AppDbContext : DbContext
             entity.HasIndex(store => store.SiupNumber).IsUnique();
             entity.HasIndex(store => store.PhoneNumber).IsUnique();
         });
-        
-        
+        modelBuilder.Entity<UserCredential>().HasIndex(uc => uc.Email).IsUnique();
     }
 }

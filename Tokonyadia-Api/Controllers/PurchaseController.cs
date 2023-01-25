@@ -7,9 +7,9 @@ using Tokonyadia_Api.Services;
 
 namespace Tokonyadia_Api.Controllers;
 
-[ApiController]
+// [ApiController]
 [Route("api/purchases")]
-public class PurchaseController : ControllerBase
+public class PurchaseController : BaseController
 {
     private readonly IPurchaseService _purchaseService;
     

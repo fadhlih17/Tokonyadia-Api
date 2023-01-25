@@ -31,31 +31,29 @@ namespace TokonyadiaApi.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("NVarchar(100)")
+                        .HasColumnType("Varchar(100)")
                         .HasColumnName("address");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
-                        .HasColumnType("NVarchar(50)")
+                        .HasColumnType("Varchar(48)")
                         .HasColumnName("customer_name");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("NVarchar(50)")
-                        .HasColumnName("email");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("NVarchar(14)")
+                        .HasColumnType("Varchar(14)")
                         .HasColumnName("phone_number");
+
+                    b.Property<Guid>("UserCredentialId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_credential_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.HasIndex("PhoneNumber")
                         .IsUnique();
+
+                    b.HasIndex("UserCredentialId");
 
                     b.ToTable("m_customer");
                 });
@@ -164,6 +162,22 @@ namespace TokonyadiaApi.Migrations
                     b.ToTable("t_purchase_detail");
                 });
 
+            modelBuilder.Entity("Tokonyadia_Api.Entities.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<int>("ERole")
+                        .HasColumnType("int")
+                        .HasColumnName("role");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("m_role");
+                });
+
             modelBuilder.Entity("Tokonyadia_Api.Entities.Store", b =>
                 {
                     b.Property<Guid>("Id")
@@ -200,6 +214,49 @@ namespace TokonyadiaApi.Migrations
                         .IsUnique();
 
                     b.ToTable("m_store");
+                });
+
+            modelBuilder.Entity("Tokonyadia_Api.Entities.UserCredential", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("password");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("role_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("m_user_credential");
+                });
+
+            modelBuilder.Entity("Tokonyadia_Api.Entities.Customer", b =>
+                {
+                    b.HasOne("Tokonyadia_Api.Entities.UserCredential", "UserCredential")
+                        .WithMany()
+                        .HasForeignKey("UserCredentialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserCredential");
                 });
 
             modelBuilder.Entity("Tokonyadia_Api.Entities.ProductPrice", b =>
@@ -249,6 +306,17 @@ namespace TokonyadiaApi.Migrations
                     b.Navigation("ProductPrice");
 
                     b.Navigation("Purchase");
+                });
+
+            modelBuilder.Entity("Tokonyadia_Api.Entities.UserCredential", b =>
+                {
+                    b.HasOne("Tokonyadia_Api.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Tokonyadia_Api.Entities.Product", b =>

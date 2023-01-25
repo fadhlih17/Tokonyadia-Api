@@ -6,26 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TokonyadiaApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initialcreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "m_customer",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    customername = table.Column<string>(name: "customer_name", type: "NVarchar(50)", nullable: false),
-                    address = table.Column<string>(type: "NVarchar(100)", nullable: false),
-                    phonenumber = table.Column<string>(name: "phone_number", type: "NVarchar(14)", nullable: false),
-                    email = table.Column<string>(type: "NVarchar(50)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_m_customer", x => x.id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "m_product",
                 columns: table => new
@@ -37,6 +22,18 @@ namespace TokonyadiaApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_m_product", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "m_role",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    role = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_m_role", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,20 +52,21 @@ namespace TokonyadiaApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "t_purchase",
+                name: "m_user_credential",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    transdate = table.Column<DateTime>(name: "trans_date", type: "datetime2", nullable: false),
-                    customerid = table.Column<Guid>(name: "customer_id", type: "uniqueidentifier", nullable: false)
+                    email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    password = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
+                    roleid = table.Column<Guid>(name: "role_id", type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_t_purchase", x => x.id);
+                    table.PrimaryKey("PK_m_user_credential", x => x.id);
                     table.ForeignKey(
-                        name: "FK_t_purchase_m_customer_customer_id",
-                        column: x => x.customerid,
-                        principalTable: "m_customer",
+                        name: "FK_m_user_credential_m_role_role_id",
+                        column: x => x.roleid,
+                        principalTable: "m_role",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -101,6 +99,46 @@ namespace TokonyadiaApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "m_customer",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    customername = table.Column<string>(name: "customer_name", type: "Varchar(48)", nullable: false),
+                    phonenumber = table.Column<string>(name: "phone_number", type: "Varchar(14)", nullable: false),
+                    address = table.Column<string>(type: "Varchar(100)", nullable: false),
+                    usercredentialid = table.Column<Guid>(name: "user_credential_id", type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_m_customer", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_m_customer_m_user_credential_user_credential_id",
+                        column: x => x.usercredentialid,
+                        principalTable: "m_user_credential",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "t_purchase",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    transdate = table.Column<DateTime>(name: "trans_date", type: "datetime2", nullable: false),
+                    customerid = table.Column<Guid>(name: "customer_id", type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_t_purchase", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_t_purchase_m_customer_customer_id",
+                        column: x => x.customerid,
+                        principalTable: "m_customer",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "t_purchase_detail",
                 columns: table => new
                 {
@@ -127,16 +165,15 @@ namespace TokonyadiaApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_m_customer_email",
-                table: "m_customer",
-                column: "email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_m_customer_phone_number",
                 table: "m_customer",
                 column: "phone_number",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_m_customer_user_credential_id",
+                table: "m_customer",
+                column: "user_credential_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_m_product_price_product_id",
@@ -159,6 +196,17 @@ namespace TokonyadiaApi.Migrations
                 table: "m_store",
                 column: "siup_number",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_m_user_credential_email",
+                table: "m_user_credential",
+                column: "email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_m_user_credential_role_id",
+                table: "m_user_credential",
+                column: "role_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_purchase_customer_id",
@@ -196,6 +244,12 @@ namespace TokonyadiaApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "m_customer");
+
+            migrationBuilder.DropTable(
+                name: "m_user_credential");
+
+            migrationBuilder.DropTable(
+                name: "m_role");
         }
     }
 }

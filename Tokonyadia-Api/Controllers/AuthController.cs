@@ -1,24 +1,50 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tokonyadia_Api.DTO;
 using Tokonyadia_Api.Entities;
+using Tokonyadia_Api.Services;
 
 namespace Tokonyadia_Api.Controllers;
 
-[ApiController]
+// [ApiController]
 [Route("api/auth")]
-public class AuthController : ControllerBase
+public class AuthController : BaseController
 {
-    private static List<UserCredential> _userCredentials = new();
+    private readonly IAuthService _authService;
+
+    public AuthController(IAuthService authService)
+    {
+        _authService = authService;
+    }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] AuthRequest request)
+    [AllowAnonymous] // Semua orang bisa akses tanpa membawa token
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        return null;
+        var user = await _authService.Register(request);
+        var response = new CommonResponse<RegisterResponse>
+        {
+            StatusCode = (int)HttpStatusCode.Created,
+            Message = "Succesfully create new user",
+            Data = user
+        };
+        
+        return Created("api/auth/register", response);
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] AuthRequest request)
+    [AllowAnonymous]
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        return null;
+        var login = await _authService.Login(request);
+        var response = new CommonResponse<LoginResponse>
+        {
+            StatusCode = (int)HttpStatusCode.OK,
+            Message = "Succesfully Login",
+            Data = login
+        };
+
+        return Ok(response);
     }
 }
